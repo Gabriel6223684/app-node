@@ -1,0 +1,1 @@
+const path = require('path');\nconst migration = require('./001_create_produtos.js');\n\nmigration.up().then(() => {\n  console.log('Migration ran successfully!');\n}).catch(err => {\n  console.error('Migration error:', err);\n}).finally(() => process.exit(0));

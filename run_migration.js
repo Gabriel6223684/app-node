@@ -1,0 +1,1 @@
+const migration = require('./app/database/migration/001_create_produtos.js');\n\n(async () => {\n  try {\n    await migration.up();\n    console.log('Migration completed!');\n  } catch (err) {\n    console.error('Migration failed:', err);\n  } finally {\n    process.exit(0);\n  }\n})();

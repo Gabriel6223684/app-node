@@ -1,5 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
+const { app, BrowserWindow, ipcMain } = require('electron')\nconst path = require('path')\nconst db = require('../database/connection.js')
 
 let mainWindow
 
@@ -54,4 +53,4 @@ ipcMain.on('fechar-janela-e-ir-inicio', (event) => {
     }
 });
 
-app.whenReady().then(createWindow)
+ipcMain.handle('get-database-data', async (event, sql, params = []) => {\n  try {\n    const result = await db.query(sql, params);\n    return result;\n  } catch (err) {\n    console.error(err);\n    return [];\n  }\n});\n\napp.whenReady().then(createWindow)
