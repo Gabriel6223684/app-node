@@ -1,1 +1,0 @@
-if (endpoint === '/produto/update') { \n  const id = data.id; \n  const result = await window.api.enviarDados(this.getQuery(endpoint), [data.nome, data.descricao_curta, data.codigo_barra, parseFloat(data.valor), id]); \n  return { status: result.length > 0, id: result[0]?.id || id, msg: 'OK' }; \n } \nreturn { status: result.length > 0, id: result[0]?.id || null, msg: 'OK' };

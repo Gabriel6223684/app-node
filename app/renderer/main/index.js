@@ -1,56 +1,24 @@
-const { app, BrowserWindow, ipcMain } = require('electron')\nconst path = require('path')\nconst db = require('../database/connection.js')
+import '../../config/env.js';
+import { app } from 'electron';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import MainWindowFactory from './windows/MainWindowFactory.js';
 
-let mainWindow
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-function createWindow() {
-    mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 600,
-        webPreferences: {
-            // Verifique se este caminho do preload está correto em relação a este arquivo
-            preload: path.join(__dirname, '../../preload/preload.js'),
-            contextIsolation: true
-        }
-    });
+let mainWindow = null;
 
-    // USAR PATH.JOIN COM __DIRNAME É O SEGREDO:
-    // Se o index.html estiver na mesma pasta que este arquivo JS:
-    mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
-    // Se o index.html estiver uma pasta acima:
-    // mainWindow.loadFile(path.join(__dirname, '../index.html'));
+async function bootstrap() {
+    mainWindow = MainWindowFactory.createWindow();
 }
 
-// Dentro do seu arquivo principal (main.js ou similar)
-ipcMain.on('abrir-janela', (event, pagina) => {
-    const novaJanela = new BrowserWindow({
-        width: 800,
-        height: 600,
-        parent: mainWindow, // Mantém como filha da principal
-        modal: true,
-        webPreferences: {
-            preload: path.join(__dirname, '../../preload/preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false
-        }
-    });
+app.whenReady().then(bootstrap);
 
-    // Ajuste o caminho conforme sua estrutura (ex: pasta 'pages')
-    const caminhoPagina = path.join(__dirname, `../pages/${pagina}.html`);
-    novaJanela.loadFile(caminhoPagina);
-
-    novaJanela.once('ready-to-show', () => novaJanela.show());
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
 });
 
-// IPC para fechar janela atual e carregar página principal
-ipcMain.on('fechar-janela-e-ir-inicio', (event) => {
-    const janelaAtual = BrowserWindow.fromWebContents(event.sender);
-    if (janelaAtual) {
-        // Carregar a página principal antes de fechar
-        mainWindow.loadFile(path.join(__dirname, 'index.html')).then(() => {
-            janelaAtual.close();
-        });
-    }
+app.on('activate', async () => {
+    if (!mainWindow) await bootstrap();
 });
-
-ipcMain.handle('get-database-data', async (event, sql, params = []) => {\n  try {\n    const result = await db.query(sql, params);\n    return result;\n  } catch (err) {\n    console.error(err);\n    return [];\n  }\n});\n\napp.whenReady().then(createWindow)
