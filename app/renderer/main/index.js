@@ -1,5 +1,5 @@
 import '../../config/env.js';
-import { app } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import MainWindowFactory from './windows/MainWindowFactory.js';
@@ -22,3 +22,6 @@ app.on('window-all-closed', () => {
 app.on('activate', async () => {
     if (!mainWindow) await bootstrap();
 });
+
+BrowserWindow.mainWindow = {
+}

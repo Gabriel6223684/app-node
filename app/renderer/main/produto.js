@@ -15,3 +15,20 @@ saveButton.addEventListener('click', async () => {
         alert('Erro ao salvar produto!');
     }
 });
+
+const button = document.getElementById("save-button");
+
+button.addEventListener("click", () => {
+
+    const name = document.getElementById("name").value;
+    const price = document.getElementById("price").value;
+
+    const product = {
+        id: Date.now(), // exemplo de ID
+        name: name,
+        price: price
+    };
+
+    addProductToTable(product);
+
+});

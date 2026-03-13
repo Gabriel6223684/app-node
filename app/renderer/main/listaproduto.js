@@ -22,3 +22,44 @@ cadastroButton.addEventListener('click', async () => {
         console.error('Erro ao abrir a janela de cadastro de produtos:', error);
     }
 });
+
+function addProductToTable(product) {
+
+    const table = document.getElementById("product-table");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${product.id}</td>
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+    `;
+
+    table.appendChild(row);
+}
+
+async function loadProducts() {
+
+    const products = await window.electronAPI.getProducts();
+
+    const table = document.getElementById("product-table");
+
+    table.innerHTML = "";
+
+    products.forEach(product => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+        <td>${product.id}</td>
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        `;
+
+        table.appendChild(row);
+
+    });
+
+}
+
+loadProducts();
