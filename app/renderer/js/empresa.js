@@ -3,13 +3,14 @@ const saveButton = document.getElementById('save-button');
 saveButton.addEventListener('click', async () => {
     const data = {
         nome: document.getElementById('nome').value,
-        price: document.getElementById('price').value,
+        cnpj: document.getElementById('cnpj').value,
     };
 
     try {
-        const result = await window.electronAPI.saveProduct(data);
-        console.log('Empresa salvo com sucesso:', result);
-        alert('Empresa salvo com sucesso!');
+        const result = await window.electronAPI.saveEmpresa(data);
+        console.log('Empresa salva com sucesso:', result);
+        alert('Empresa salva com sucesso!');
+        window.electronAPI.openPage('listaempresa.html');
     } catch (error) {
         console.error('Erro ao salvar empresa:', error);
         alert('Erro ao salvar empresa!');

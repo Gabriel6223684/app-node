@@ -7,9 +7,10 @@ saveButton.addEventListener('click', async () => {
     };
 
     try {
-        const result = await window.electronAPI.saveProduct(data);
+        const result = await window.electronAPI.saveFornecedor(data);
         console.log('Fornecedor salvo com sucesso:', result);
         alert('Fornecedor salvo com sucesso!');
+        window.electronAPI.openPage('listafornecedor.html');
     } catch (error) {
         console.error('Erro ao salvar fornecedor:', error);
         alert('Erro ao salvar fornecedor!');

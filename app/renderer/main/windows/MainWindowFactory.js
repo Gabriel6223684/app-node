@@ -1,7 +1,7 @@
 // Importa BrowserWindow (cria janelas), Menu (controla menus) e ipcMain (escuta eventos do renderer) 
 // do Electron
 import { BrowserWindow, Menu, ipcMain } from 'electron';
-// Importa o módulo nativo 'path' do Node.js para manipular caminhos de arquivos
+// Importa o módulo
 import path from 'node:path';
 // Importa a função que converte uma URL de módulo ESM para caminho de arquivo físico
 import { fileURLToPath } from 'node:url';
@@ -14,7 +14,7 @@ const PAGES_DIR = path.resolve(__dirname, '..'); // app/renderer/main
 //Importa o repositório de produtos para permitir a inserção de dados de produtos a partir do renderer via IPC
 import ProductRepository from '../../../database/repositories/ProductRepository.js';
 import CustomerRepository from '../../../database/repositories/CustomerRepository.js';
-import FornecedorRepository from '../../../database/repositories/FornecedorRepository.js';
+import FornecedorRepository from '../../../database/repositories/FornecedorRepository.js';import EmpresaRepository from '../../../database/repositories/EmpresaRepository.js';
 // Exporta a classe como padrão do módulo, tornando-a disponível para importação em outros arquivos
 export default class MainWindowFactory {
     // Método estático — pode ser chamado direto na classe sem precisar instanciá-la: MainWindowFactory.createWindow()
@@ -74,10 +74,7 @@ ipcMain.handle('user:search', async (_event, searchData) => {
             return await FornecedorRepository.insert(fornecedorData);
         });
 
-        ipcMain.handle('fornecedor:search', async (_event, fornecedorData) => {
-            return await FornecedorRepository.search(fornecedorData);
-        });
-        // Carrega o arquivo index.html na janela assim que ela é criada, exibindo a tela inicial
+ipcMain.handle('fornecedor:search', async (_event, fornecedorData) => {            return await FornecedorRepository.search(fornecedorData);        });      ipcMain.handle('empresa:save', async (_event, empresaData) => {            return await EmpresaRepository.insert(empresaData);        });        ipcMain.handle('empresa:search', async (_event, searchData) => {            return await EmpresaRepository.search(searchData);        });        // Carrega o arquivo index.html
         mainWindow.loadFile(path.join(PAGES_DIR, 'index.html'));
         // Retorna a instância da janela criada para que possa ser referenciada em outros lugares da aplicação
         return mainWindow;

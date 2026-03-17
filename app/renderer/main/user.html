@@ -10,21 +10,20 @@
 
 <body>
     <button class="btn btn-primary" onclick="window.electronAPI.goHome()">Home</button>
-    <button class="btn btn-primary" onclick="window.electronAPI.openPage('listauser.html')">Lista de
-        usuários</button>
+    <button class="btn btn-primary" onclick="window.electronAPI.openPage('listaproduto.html')">Lista de
+        usuario</button>
     <br>
     <br>
-    <div class="row">
-        <div class="col-4">
-            <input type="text" class="form-control mb-2" placeholder="Nome do usuário" id="name">
-            <input type="text" class="form-control" placeholder="CPJ do usuário" id="cpf">
-        </div>
-    </div>
+    <input type="text" class="form-control" placeholder="Nome do usuário" id="nome">
+    <br>
+    <br>
+    <input type="text" class="form-control" placeholder="CPF" id="cpf">
+    <br>
     <br>
     <button class="btn btn-success" id="save-button">Salvar Usuário</button>
 
+    <script src="../js/produto.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/user.js"></script>
 </body>
 
 </html>

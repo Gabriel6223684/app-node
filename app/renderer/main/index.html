@@ -9,10 +9,11 @@
 </head>
 
 <body>
-<button class="btn btn-primary m-2" id="btn-produtos">Produtos</button>
-    <button class="btn btn-primary m-2" id="btn-empresas">Empresas</button>
-    <button class="btn btn-primary m-2" id="btn-fornecedores">Fornecedores</button>
-    <button class="btn btn-primary m-2" id="btn-usuarios">Usuários</button>
+<button class="btn btn-primary m-2" id="btn-produtos" onclick="window.electronAPI.openPage('produto.html')">Produtos</button>
+    <button class="btn btn-primary m-2" id="btn-empresas" onclick="window.electronAPI.openPage('empresa.html')">Empresas</button>
+    <button class="btn btn-primary m-2" id="btn-fornecedores" onclick="window.electronAPI.openPage('empresa.html')">Fornecedores</button>
+    <button class="btn btn-primary m-2" id="btn-usuarios" onclick="window.electronAPI.openPage('index.html')">Usuários</button>
+    <button class="btn btn-primary m-2" id="btn-clientes onclick="window.electronAPI.openPage('customer.html')"">Clientes</button>
     <script type="module" src="../js/home.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

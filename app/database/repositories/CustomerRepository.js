@@ -6,7 +6,7 @@ export default class CustomerRepository {
     try {
       const result = await client.query(
         'INSERT INTO customer (nome, email) VALUES ($1, $2) RETURNING *',
-        [data.nome, data.email]
+[data.nome, data.cpf]
       );
       return result.rows[0];
     } finally {
@@ -22,13 +22,13 @@ export default class CustomerRepository {
       const recordsTotal = parseInt(totalResult.rows[0].total);
 
       const filteredResult = await client.query(
-        'SELECT count(*)::int AS filtered FROM customer WHERE nome ILIKE $1 OR email ILIKE $1',
+'SELECT count(*)::int AS filtered FROM customer WHERE nome ILIKE $1 OR cpf ILIKE $1'
         [term]
       );
       const recordsFiltered = parseInt(filteredResult.rows[0].filtered);
 
       const dataResult = await client.query(
-        'SELECT * FROM customer WHERE nome ILIKE $1 OR email ILIKE $1 ORDER BY nome LIMIT $2 OFFSET $3',
+'SELECT * FROM customer WHERE nome ILIKE $1 OR cpf ILIKE $1 ORDER BY nome LIMIT $2 OFFSET $3'
         [term, length, start]
       );
 
