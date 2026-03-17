@@ -1,12 +1,12 @@
 import Connection from '../Connection.js';
 
-export default class ProductRepository {
+export default class UserRepository {
   static async insert(data) {
     const client = await Connection.connect();
     try {
       const result = await client.query(
-        'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *',
-        [data.name, parseFloat(data.price)]
+        'INSERT INTO users (name, cpf) VALUES ($1, $2) RETURNING *',
+        [data.name, data.cpf]
       );
       return result.rows[0];
     } finally {
@@ -18,17 +18,17 @@ export default class ProductRepository {
     const client = await Connection.connect();
     try {
       const term = `%${search}%`;
-      const totalResult = await client.query('SELECT count(*)::int AS total FROM products');
+      const totalResult = await client.query('SELECT count(*)::int AS total FROM users');
       const recordsTotal = parseInt(totalResult.rows[0].total);
 
       const filteredResult = await client.query(
-        'SELECT count(*)::int AS filtered FROM products WHERE name ILIKE $1',
+        'SELECT count(*)::int AS filtered FROM users WHERE name ILIKE $1',
         [term]
       );
       const recordsFiltered = parseInt(filteredResult.rows[0].filtered);
 
       const dataResult = await client.query(
-        'SELECT * FROM products WHERE name ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
+        'SELECT * FROM users WHERE name ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
         [term, length, start]
       );
 

@@ -1,1 +1,12 @@
-const db = require('../connection.js');\n\nasync function up() {\n  const sql = `\n    CREATE TABLE IF NOT EXISTS produtos (\n      id SERIAL PRIMARY KEY,\n      nome VARCHAR(255) NOT NULL,\n      descricao_curta VARCHAR(100) NOT NULL,\n      codigo_barra VARCHAR(50) UNIQUE NOT NULL,\n      valor DECIMAL(10,2) NOT NULL DEFAULT 0.00,\n      estoque INTEGER DEFAULT 0,\n      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n    );\n  `;\n  await db.query(sql);\n  console.log('✅ Table produtos created successfully!');\n}\n\nasync function down() {\n  await db.query('DROP TABLE IF EXISTS produtos CASCADE');\n  console.log('Table produtos dropped');\n}\n\nmodule.exports = { up, down };\n\nif (require.main === module) {\n  up().catch(console.error);\n}
+import Connection from '../Connection.js';
+
+export default async function up() {
+  const client = await Connection.connect();
+  try {
+    const sql = 'CREATE TABLE IF NOT EXISTS products (id SERIAL PRIMARY KEY, name VARCHAR(255) NOT NULL, price DECIMAL(10,2) NOT NULL DEFAULT 0.00);';
+    await client.query(sql);
+    console.log('✅ Migration 001_create_produtos executada.');
+  } finally {
+    client.release();
+  }
+}

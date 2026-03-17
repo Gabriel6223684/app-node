@@ -1,31 +1,33 @@
 {
     "name": "deskivo",
     "version": "1.0.0",
-    "main": "app/renderer/main/index.js",
-    "type": "module",
     "private": true,
-    "scripts": {
-        "start": "electron ."
-    },
-    "devDependencies": {
-        "drizzle-kit": "^0.31.9",
-        "electron": "^40.8.0"
-    },
-    "dependencies": {
-        "dotenv": "^17.3.1",
-        "drizzle-orm": "^0.45.1",
-        "pg": "^8.20.0"
-    },
     "description": "",
+    "keywords": [],
+    "homepage": "https://github.com/Gabriel6223684/app-node#readme",
+    "bugs": {
+        "url": "https://github.com/Gabriel6223684/app-node/issues"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Gabriel6223684/app-node.git"
     },
-    "keywords": [],
-    "author": "",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/Gabriel6223684/app-node/issues"
+    "author": "gabriel luiz da silva",
+    "type": "module",
+    "main": "app/renderer/main/index.js",
+    "scripts": {
+        "start": "electron ."
     },
-    "homepage": "https://github.com/Gabriel6223684/app-node#readme"
+    "dependencies": {
+        "datatables.net": "^2.3.7",
+        "datatables.net-bs5": "^2.3.7",
+        "dotenv": "^17.3.1",
+        "drizzle-orm": "^0.45.1",
+        "pg": "^8.20.0"
+    },
+    "devDependencies": {
+        "drizzle-kit": "^0.31.9",
+        "electron": "^40.8.0"
+    }
 }
