@@ -1,9 +1,12 @@
-import Connection from '../Connection.js';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Connection } from '../Connection.js';
+import { products } from '../schema.js';
+import { ilike, or, sql, asc, count } from 'drizzle-orm';
 
 export default class ProductRepository {
   static async insert(data) {
-    const client = await Connection.connect();
     try {
+      const client = await Connection.connect();
       const result = await client.query(
         'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *',
         [data.name, parseFloat(data.price)]

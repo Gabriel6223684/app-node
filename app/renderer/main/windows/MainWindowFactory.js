@@ -14,7 +14,8 @@ const PAGES_DIR = path.resolve(__dirname, '..'); // app/renderer/main
 //Importa o repositório de produtos para permitir a inserção de dados de produtos a partir do renderer via IPC
 import ProductRepository from '../../../database/repositories/ProductRepository.js';
 import CustomerRepository from '../../../database/repositories/CustomerRepository.js';
-import FornecedorRepository from '../../../database/repositories/FornecedorRepository.js';import EmpresaRepository from '../../../database/repositories/EmpresaRepository.js';
+import FornecedorRepository from '../../../database/repositories/FornecedorRepository.js';
+import UserRepository from '../../../database/repositories/UserRepository.js';
 // Exporta a classe como padrão do módulo, tornando-a disponível para importação em outros arquivos
 export default class MainWindowFactory {
     // Método estático — pode ser chamado direto na classe sem precisar instanciá-la: MainWindowFactory.createWindow()
@@ -46,21 +47,22 @@ export default class MainWindowFactory {
         });
         // Registra um handler IPC que escuta o evento 'window:save-product' 
         // disparado pelo renderer para salvar dados de produto
-ipcMain.handle('product:save', async (_event, productData) => {
+        ipcMain.handle('product:save', async (_event, productData) => {
             return await ProductRepository.insert(productData);
-        });
-
-ipcMain.handle('user:save', async (_event, userData) => {
-            return await UserRepository.insert(userData);
-        });
-
-ipcMain.handle('user:search', async (_event, searchData) => {
-            return await UserRepository.search(searchData);
         });
 
         ipcMain.handle('product:search', async (_event, productData) => {
             return await ProductRepository.search(productData);
         });
+
+        ipcMain.handle('user:save', async (_event, userData) => {
+            return await UserRepository.insert(userData);
+        });
+
+        ipcMain.handle('user:search', async (_event, searchData) => {
+            return await UserRepository.search(searchData);
+        });
+
 
         ipcMain.handle('customer:save', async (_event, customerData) => {
             return await CustomerRepository.insert(customerData);
@@ -74,7 +76,7 @@ ipcMain.handle('user:search', async (_event, searchData) => {
             return await FornecedorRepository.insert(fornecedorData);
         });
 
-ipcMain.handle('fornecedor:search', async (_event, fornecedorData) => {            return await FornecedorRepository.search(fornecedorData);        });      ipcMain.handle('empresa:save', async (_event, empresaData) => {            return await EmpresaRepository.insert(empresaData);        });        ipcMain.handle('empresa:search', async (_event, searchData) => {            return await EmpresaRepository.search(searchData);        });        // Carrega o arquivo index.html
+        ipcMain.handle('fornecedor:search', async (_event, fornecedorData) => { return await FornecedorRepository.search(fornecedorData); }); ipcMain.handle('empresa:save', async (_event, empresaData) => { return await EmpresaRepository.insert(empresaData); }); ipcMain.handle('empresa:search', async (_event, searchData) => { return await EmpresaRepository.search(searchData); });        // Carrega o arquivo index.html
         mainWindow.loadFile(path.join(PAGES_DIR, 'index.html'));
         // Retorna a instância da janela criada para que possa ser referenciada em outros lugares da aplicação
         return mainWindow;

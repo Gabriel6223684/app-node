@@ -7,7 +7,7 @@ export default async function up() {
       CREATE TABLE IF NOT EXISTS users (
         id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
         name VARCHAR(150) NOT NULL,
-        cpf VARCHAR(14) NOT NULL,
+        cpf text,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
       );
     `;

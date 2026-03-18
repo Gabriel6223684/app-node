@@ -7,7 +7,7 @@ export default async function up() {
       CREATE TABLE IF NOT EXISTS customer (
         id BIGSERIAL PRIMARY KEY,
         nome TEXT(150) NOT NULL,
-        email VARCHAR(255) NOT NULL,
+        cpf text,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
       );
     `;

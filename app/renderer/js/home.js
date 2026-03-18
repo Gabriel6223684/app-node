@@ -15,17 +15,6 @@ btnProdutos.addEventListener('click', async () => {
     }
 });
 
-btnEmpresas.addEventListener('click', async () => {
-    try {
-        if (!window.electronAPI || typeof window.electronAPI.openPage !== 'function') {
-            throw new Error('API do Electron não foi injetada pelo preload');
-        }
-        await window.electronAPI.openPage('listacustomer.html');
-    } catch (error) {
-        console.error('Erro ao abrir lista de empresas:', error);
-    }
-});
-
 btnFornecedores.addEventListener('click', async () => {
     try {
         if (!window.electronAPI || typeof window.electronAPI.openPage !== 'function') {
