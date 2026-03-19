@@ -7,4 +7,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     saveCliente: (data) => ipcRenderer.invoke('cliente:save', data),
     saveUsuario: (data) => ipcRenderer.invoke('usuario:save', data),
     saveFornecedor: (data) => ipcRenderer.invoke('fornecedor:save', data),
+    searchProducts: (data) => ipcRenderer.invoke('product:search', data),
+    searchCliente: (data) => ipcRenderer.invoke('cliente:search', data),
+    searchUsuario: (data) => ipcRenderer.invoke('usuario:search', data),
+    searchFornecedor: (data) => ipcRenderer.invoke('fornecedor:search', data),
 });

@@ -1,4 +1,4 @@
-import Connection from '../Connection.js';
+import Connection from '../connection.js';
 
 export default class FornecedorRepository {
   static async insert(data) {

@@ -1,4 +1,4 @@
-import { pgTable, varchar, numeric, serial, text, timestamp, bigserial } from "drizzle-orm/pg-core";
+import { pgTable, varchar, numeric, serial, text } from "drizzle-orm/pg-core";
 
 export const products = pgTable("products", {
     id: serial("id").primaryKey(),
@@ -6,16 +6,23 @@ export const products = pgTable("products", {
     price: numeric("price", { precision: 18, scale: 4 }).notNull(),
 });
 
-export const customer = pgTable('customer', {
-	id: serial('id').primaryKey(),
-	nome: text('nome', { length: 150 }).notNull(),
-	email: varchar('email', { length: 255 }).notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+export const cliente = pgTable("cliente", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    cpf: text("cpf").notNull(),
+    telefone: text("telefone").notNull()
 });
 
-// Stub for fornecedor assuming structure
-export const fornecedores = pgTable("fornecedores", {
+export const usuario = pgTable("usuario", {
     id: serial("id").primaryKey(),
-    nome: varchar("nome", { length: 255 }).notNull(),
-    cnpj: varchar("cnpj", { length: 18 }).notNull(),
+    name: text("name").notNull(),
+    cpf: text("cpf").notNull(),
+    telefone: text("telefone").notNull()
+});
+
+export const fornecedor = pgTable("fornecedor", {
+    id: serial("id").primaryKey(),
+    name: text("name").notNull(),
+    cpf_cnpj: text("cpf_cnpj").notNull(),
+    telefone: text("telefone").notNull()
 });

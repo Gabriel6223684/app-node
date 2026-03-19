@@ -1,17 +1,38 @@
-document.addEventListener("DOMContentLoaded", () => {
-    new DataTable('#tabela', {
-        serverSide: true,
-        responsive: true,
-        language: {
-            url: 'https://cdn.datatables.net/plug-ins/2.3.7/i18n/pt-BR.json'
-        },
-        ajax: (data, callback, settings) => {
-            window.electronAPI.searchFornecedores(data).then(res => callback(res)).catch(err => console.error(err));
-        },
-        columns: [
-            { data: 'id', title: 'ID' },
-            { data: 'nome', title: 'Nome' },
-            { data: 'cnpj', title: 'CNPJ' }
-        ]
-    });
+
+const table = new DataTable('#tabela', {
+    responsive: true,
+    processing: true,
+    serverSide: true,
+    ajax: async (data, callback) => {
+        const filter = {
+            term: data?.search?.value,      //Termo da pesquisa
+            limit: data?.length,            //Limite de resgistos a ser selecionado do banco
+            offset: data?.start,            //A pesquinsa inicia no registro Ex: 5, 10
+            orderType: data?.order[0]?.dir, //Tipo de ordenação 
+            column: data?.order[0]?.column  //Coluna a ser filtrada
+        }
+        try {
+            const response = await window.electronAPI.searchFornecedor(filter);
+            callback({
+                draw: response?.draw ?? data?.draw ?? 0,
+                recordsTotal: response?.recordsTotal ?? 0,
+                recordsFiltered: response?.recordsFiltered ?? 0,
+                data: response?.data ?? []
+            });
+        } catch (error) {
+            console.error(`Restrição: ${error.message}`);
+            callback({
+                draw: 0,
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: []
+            });
+        }
+    },
+    columns: [
+        { data: 'id', title: 'Código' },
+        { data: 'name', title: 'Nome' },
+        { data: 'cpf_cnpj', title: 'cpf' },
+        { data: 'telefone', title: 'Contato' }
+    ]
 });
