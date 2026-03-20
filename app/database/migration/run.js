@@ -1,3 +1,4 @@
+import '../../config/env.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -5,16 +6,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const migrations = [
-  './001_create_produtos.js',
-  './users.js',
-  './customer.js',
-  './002_create_fornecedores.js'
+  './001_create_products.js',
+  './002_create_cliente.js',
+  './003_create_usuario.js',
+  './004_create_fornecedor.js'
 ];
 
 async function runMigrations() {
   for (const migrationPath of migrations) {
     try {
-  const migrationModule = await import(`./${path.basename(migrationPath)}`);
+      const migrationModule = await import(`./${path.basename(migrationPath)}`);
       const migration = migrationModule.default;
       await migration();
       console.log(`Migration ${migrationPath} executada com sucesso.`);

@@ -5,8 +5,8 @@ export default class FornecedorRepository {
     const client = await Connection.connect();
     try {
       const result = await client.query(
-        'INSERT INTO fornecedor (nome, cnpj) VALUES ($1, $2) RETURNING *',
-        [data.nome, data.cnpj]
+        'INSERT INTO fornecedor (name, cpf_cnpj, telefone) VALUES ($1, $2, $3) RETURNING *',
+        [data.name, data.cpf_cnpj, data.telefone]
       );
       return result.rows[0];
     } finally {
@@ -22,13 +22,13 @@ export default class FornecedorRepository {
       const recordsTotal = parseInt(totalResult.rows[0].total);
 
       const filteredResult = await client.query(
-        'SELECT count(*)::int AS filtered FROM fornecedor WHERE nome ILIKE $1 OR cnpj ILIKE $1',
+        'SELECT count(*)::int AS filtered FROM fornecedor WHERE name ILIKE $1 OR cpf_cnpj ILIKE $1 OR telefone ILIKE $1',
         [term]
       );
       const recordsFiltered = parseInt(filteredResult.rows[0].filtered);
 
       const dataResult = await client.query(
-        'SELECT * FROM fornecedor WHERE nome ILIKE $1 OR cnpj ILIKE $1 ORDER BY nome LIMIT $2 OFFSET $3',
+        'SELECT * FROM fornecedor WHERE name ILIKE $1 OR cpf_cnpj ILIKE $1 OR telefone ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
         [term, length, start]
       );
 
