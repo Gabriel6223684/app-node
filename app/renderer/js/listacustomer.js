@@ -4,11 +4,11 @@ const table = new DataTable('#tabela', {
     serverSide: true,
     ajax: async (data, callback) => {
         const filter = {
-            term: data?.search?.value,      //Termo da pesquisa
-            limit: data?.length,            //Limite de resgistos a ser selecionado do banco
-            offset: data?.start,            //A pesquinsa inicia no registro Ex: 5, 10
-            orderType: data?.order[0]?.dir, //Tipo de ordenação 
-            column: data?.order[0]?.column  //Coluna a ser filtrada
+            term: data?.search?.value,
+            limit: data?.length,
+            offset: data?.start,
+            orderType: data?.order[0]?.dir,
+            column: data?.order[0]?.column
         }
         try {
             const response = await window.electronAPI.searchCliente(filter);
@@ -19,7 +19,7 @@ const table = new DataTable('#tabela', {
                 data: response?.data ?? []
             });
         } catch (error) {
-            console.error(`Restrição: ${error.message}`);
+            console.error(`Erro: ${error.message}`);
             callback({
                 draw: 0,
                 recordsTotal: 0,
@@ -31,7 +31,7 @@ const table = new DataTable('#tabela', {
     columns: [
         { data: 'id', title: 'Código' },
         { data: 'name', title: 'Nome' },
-        { data: 'cpf', title: 'cpf' },
-        { data: 'telefone', title: 'Contato' }
+        { data: 'cpf', title: 'CPF' },
+        { data: 'telefone', title: 'Telefone' }
     ]
 });

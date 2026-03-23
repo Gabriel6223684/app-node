@@ -1,33 +1,57 @@
 {
     "name": "deskivo",
-    "version": "1.0.0",
+    "version": "1.0.1",
+    "author": {
+        "name": "Gabriel Luiz",
+        "email": "gabrielgb.luiz000@gmail.com"
+    },
     "private": true,
-    "description": "",
-    "keywords": [],
-    "homepage": "https://github.com/Gabriel6223684/app-node#readme",
-    "bugs": {
-        "url": "https://github.com/Gabriel6223684/app-node/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Gabriel6223684/app-node.git"
-    },
-    "license": "ISC",
-    "author": "gabriel luiz da silva",
-    "type": "module",
     "main": "app/renderer/main/index.js",
+    "type": "module",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "make": "electron-builder --win --linux --publish=never",
+        "make:win": "electron-builder --win",
+        "make:linux": "electron-builder --linux",
+        "dist": "npm run make"
+    },
+    "build": {
+        "appId": "com.deskivo.app",
+        "productName": "Deskivo",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "app/**/*",
+            "package.json"
+        ],
+        "icon": "build/icon.png",
+        "win": {
+            "target": "nsis"
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "category": "Utility"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
+        }
     },
     "dependencies": {
         "datatables.net": "^2.3.7",
         "datatables.net-bs5": "^2.3.7",
         "dotenv": "^17.3.1",
         "drizzle-orm": "^0.45.1",
-        "pg": "^8.20.0"
+        "pg": "^8.20.0",
+        "update-electron-app": "^3.1.2"
     },
     "devDependencies": {
         "drizzle-kit": "^0.31.9",
-        "electron": "^40.8.0"
+        "electron": "^40.8.0",
+        "electron-builder": "^24.13.3"
     }
 }

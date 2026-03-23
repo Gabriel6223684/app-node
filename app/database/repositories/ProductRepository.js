@@ -1,58 +1,46 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { ilike, or, sql, asc } from 'drizzle-orm';
 import Connection from '../Connection.js';
-import { products } from '../schema.js';
 
 export default class ProductRepository {
-    static async insert(data) {
-        const client = await Connection.connect();
-        const db = drizzle(client);
-        try {
-            const result = await db.insert(products).values({
-                name: data.name,
-                price: data.price
-            }).returning();
-            return result[0];
-        } finally {
-            client.release();
-        }
+  static async insert(data) {
+    const client = await Connection.connect();
+    try {
+      const result = await client.query(
+        'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *',
+        [data.name, data.price]
+      );
+      return result.rows[0];
+    } finally {
+      client.release();
     }
-    static async search(data) {
-        //Captura o termo de pesquisa sem o %%
-        const rawSearch = String(data?.term ?? '').trim();
-        //Captura o termo da pesquisa já aplicando o %%
-        const terms = `%${data?.term}%`;
-        try {
-            //Abre a conexão com banco de dados
-            const client = await Connection.connect();
-            const db = drizzle(client);
-            const whereClause =
-                rawSearch !== ''
-                    ? or(
-                        sql`${products.id}::text ILIKE ${terms}`,
-                        ilike(products.name, terms),
-                        sql`${products.price}::text ILIKE ${terms}`
-                    )
-                    : undefined;
+  }
 
-            const result = await db
-                .select()
-                .from(products)
-                .where(whereClause)
-                .orderBy(asc(products.name))
-                .offset(data?.offset)
-                .limit(data?.limit);
+  static async search({ draw, start = 0, length = 10, term = '' }) {
+    const client = await Connection.connect();
+    try {
+      const searchTerm = `%${term}%`;
+      
+      const totalResult = await client.query('SELECT count(*)::int AS total FROM products');
+      const recordsTotal = parseInt(totalResult.rows[0].total);
 
-            return {
-                data: result
-            };
-        } catch (error) {
-            console.error('[ProductRepository] Erro na busca:', error.message);
-            return {
-                recordsTotal: 0,
-                recordsFiltered: 0,
-                data: [],
-            };
-        }
+      const filteredResult = await client.query(
+        'SELECT count(*)::int AS filtered FROM products WHERE name ILIKE $1 OR price::text ILIKE $1 OR id::text ILIKE $1',
+        [searchTerm]
+      );
+      const recordsFiltered = parseInt(filteredResult.rows[0].filtered);
+
+      const dataResult = await client.query(
+        'SELECT * FROM products WHERE name ILIKE $1 OR price::text ILIKE $1 OR id::text ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
+        [searchTerm, length, start]
+      );
+
+      return {
+        draw,
+        recordsTotal,
+        recordsFiltered,
+        data: dataResult.rows,
+      };
+    } finally {
+      client.release();
     }
+  }
 }

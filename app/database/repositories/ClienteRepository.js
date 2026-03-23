@@ -1,4 +1,4 @@
-import Connection from '../connection.js';
+import Connection from '../Connection.js';
 
 export default class ClienteRepository {
   static async insert(data) {
@@ -14,22 +14,23 @@ export default class ClienteRepository {
     }
   }
 
-  static async search({ draw, start = 0, length = 10, search = '' }) {
+  static async search({ draw, start = 0, length = 10, term = '' }) {
     const client = await Connection.connect();
     try {
-      const term = `%${search}%`;
+      const searchTerm = `%${term}%`;
+      
       const totalResult = await client.query('SELECT count(*)::int AS total FROM cliente');
       const recordsTotal = parseInt(totalResult.rows[0].total);
 
       const filteredResult = await client.query(
         'SELECT count(*)::int AS filtered FROM cliente WHERE name ILIKE $1 OR cpf ILIKE $1 OR telefone ILIKE $1',
-        [term]
+        [searchTerm]
       );
       const recordsFiltered = parseInt(filteredResult.rows[0].filtered);
 
       const dataResult = await client.query(
         'SELECT * FROM cliente WHERE name ILIKE $1 OR cpf ILIKE $1 OR telefone ILIKE $1 ORDER BY name LIMIT $2 OFFSET $3',
-        [term, length, start]
+        [searchTerm, length, start]
       );
 
       return {

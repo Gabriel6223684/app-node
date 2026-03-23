@@ -10,17 +10,16 @@ saveButton.addEventListener('click', async () => {
     try {
         const result = await window.electronAPI.saveFornecedor(data);
         Swal.fire({
-            title: "Fornecedor cadastrado com sucesso!",
-            icon: "success",
-            draggable: true
+            title: "Fornecedor salvo com sucesso!",
+            icon: "success"
         });
-        console.log('Fornecedor cadastrado com sucesso:', result);
+        console.log('Fornecedor salvo com sucesso:', result);
     } catch (error) {
         Swal.fire({
-            title: "Erro ao cadastrar fornecedor:",
-            text: error,
+            title: "Erro ao salvar fornecedor:",
+            text: error.message,
             icon: "error"
         });
-        console.error('Erro ao cadastrar fornecedor:', error);
+        console.error('Erro ao salvar fornecedor:', error);
     }
 });
